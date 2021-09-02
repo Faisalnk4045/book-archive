@@ -1,98 +1,98 @@
 const searchBook = () => {
-    // console.log(123);
+
     const searchField = document.getElementById('searchField');
     const searchText = searchField.value;
-    // console.log(searchText);
+
+    // clear search field
     searchField.value = '';
 
-    const url = `https://openlibrary.org/search.json?q=${searchText}`;
-    fetch(url)
-        .then(res => res.json())
-        .then(data => displayData(data.docs))
+    // hide error message
+    document.getElementById('perror').style.display = 'none';
+
+    if (searchText === '') {
+        alert('Search field is empty!');
+    }
+    else {
+        // clear previous result
+        const element = document.getElementById('parent');
+        element.textContent = '';
+
+        // hide search info
+        document.getElementById('search-info').style.display = 'none';
+
+        const url = `https://openlibrary.org/search.json?q=${searchText}`;
+        fetch(url)
+            .then(res => res.json())
+            .then(data => displayData(data.docs))
+            .catch(error => displayError(1, error));
+    }
+
 }
+
+const displayError = (err_num, err = '') => {
+    const errorElement = document.getElementById('perror');
+    if (err_num === 1) {
+        errorElement.innerText = 'Something went wrong';
+    }
+    else {
+        errorElement.innerText = 'No result found';
+    }
+    errorElement.style.display = 'block';
+}
+
 const displayData = (books) => {
+
+    // const element = document.getElementById('parent');
+    // element.textContent = ''; // clear previous result
+
     const totalSearchResult = books.length;
-    console.log(totalSearchResult);
-    let BooksDisplayed = 0;
-    books.slice(0, 20).forEach(book => {
-        BooksDisplayed++;
+    if (totalSearchResult === 0) {
+        displayError(2);
+    }
+    else {
+        let resultsDisplayed = 0;
 
-        const title = book.title;
-        const publisher = book.publisher;
-        const first_publish_year = book.first_publish_year;
-        const author_name = book.author_name;
+        books.slice(0, 7).forEach(book => {
 
-        console.log(book);
-        console.log("title: ", title);
+            resultsDisplayed++;
 
-        if (publisher === undefined) {
-            console.log('publisher_not_found');
-        }
-        else {
-            console.log("publisher: ", publisher);
-        }
+            const title = book.title; // string
+            const author_name = book.author_name; // array
+            const first_publish_year = book.first_publish_year; // number
+            const publisher = book.publisher; // array
+            const cover_i = book.cover_i; // number
 
-        if (first_publish_year === undefined) {
-            console.log('first_publish_year_not_found');
-        }
-        else {
-            console.log("first_publish_year: ", first_publish_year);
-        }
+            const parent = document.getElementById('parent');
+            const div = document.createElement('div');
+            div.classList.add('col');
+            div.innerHTML = `
+        <div class="card h-100">
+            <div class="row g-0">
+                <div class="col-md-4 p-3">
+                                <img src="https://covers.openlibrary.org/b/id/${cover_i}-M.jpg" class="img-fluid rounded-start rounded-end" alt="image of a book">
+                </div>
+                 <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title  mb-3 fs-3">${title}</h5>
+                        `+ `
+                        ${author_name ? `<p class="card-text mb-4">by ${author_name.join(', ')}</p>` : ``}
+                        `+ `
+                        ${first_publish_year ? `<p class="card-text"><small class="text-muted">First published in ${first_publish_year}</small></p>` : ``}
+                        `+ `
+                        ${publisher ? `<p class="card-text">Publisher: ${publisher[0]}</p>` : ``}
+                        `+ `
+                    </div>
+                </div>
+            </div>
+        </div>
+        `;
+            parent.appendChild(div);
+        })
+        document.getElementById('search-info').style.display = 'block';
+        const totalResult = document.getElementById('total-result-found');
+        totalResult.innerText = totalSearchResult;
+        const totalResultDisplayed = document.getElementById('displaying-result');
+        totalResultDisplayed.innerText = resultsDisplayed;
 
-        console.log("author_name: ", author_name);
-        if (author_name === undefined) {
-            console.log('author_name_not_found');
-        }
-        else {
-            author_name.forEach(author => {
-                console.log(author);
-            })
-        }
-        console.log(' ');
-    })
-    console.log(BooksDisplayed);
+    }
 }
-
-
-/* // declare variable based on the name of an object property
-const myObject = { x: 2, y: 50, z: 600, a: 25, b: 68 };
-const { x, b } = myObject;
-// console.log('myObject.p', myObject?.p?.q);
-
-// destructuring array
-const [p, q] = [45, 37, 91, 86];
-// console.log(p, q);
-
-const [best, faltu] = ['momotaj', 'poroshi'];
-// console.log(best, faltu);
-const { sky, color, money } = { sky: 'blue', soil: 'matti', color: 'red', money: 500 };
-
-//chaining
-
-const company = {
-    name: 'GP',
-    ceo: { id: 1, name: 'ajmol', food: 'fuchka' },
-    web: {
-        work: 'website development',
-        employee: 22,
-        framework: 'react',
-        tech: {
-            first: 'html',
-            second: 'css',
-            third: 'js'
-        }
-    },
-};
-
-console.log(company?.web?.tech?.third);
-console.log(company?.web?.tech?.third);
-// console.log(company?.backend?.tech.third);
-if ((company.backend?.tech.third) == undefined) {
-    console.log('undef');
-}
-else {
-    console.log('ok');
-} */
-/* const array = [10,20,30,40,50,60];
-const ary = array.slice(0,7);
-console.log(ary); */
