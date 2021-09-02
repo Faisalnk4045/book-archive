@@ -1,3 +1,15 @@
+/* search area section styles */
+#search-area{
+    background-color: #E1DCC5;
+}
+#search-info{
+    display: none;
+}
+
+/* search results section styles */
+#error-message{
+    display: none;
+}
 .card img{
     width: 100%;
 }

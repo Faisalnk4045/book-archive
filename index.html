@@ -14,31 +14,35 @@
 
 <body>
 
-    <main class="container">
-        <section>
-            <h1 class="text-center text-uppercase">Search your favorite Book</h1>
+    <main class="container my-5">
+
+        <!-- search section -->
+        <section id="search-area" class="mb-5 p-5 rounded">
+            <h3 class="text-center  mb-4">Search Your Favorite Book</h3>
             <!-- search book -->
-            <div class="input-group mb-3 w-50 mx-auto">
-                <input value="javascript" id="searchField" type="text" class="form-control"
-                    placeholder="Search the book you want" aria-label="Recipient's username"
-                    aria-describedby="button-addon2">
-                <button onclick="searchBook()" class="btn btn-outline-secondary" type="button"
+            <div class="input-group mb-3 w-50 mx-auto shadow">
+                <input id="searchField" type="text" class="form-control" placeholder="Type to search..."
+                    aria-label="Recipient's username" aria-describedby="button-addon2">
+                <button onclick="searchBook()" class="btn bg-dark btn-outline-dark text-white" type="button"
                     id="search-button">Search</button>
             </div>
+            <!-- show search info -->
+            <p id="search-info" class="text-center">Displaying <span id="displaying-result"></span> of <span
+                    id="total-result-found"></span> search results.</p>
         </section>
+
+        <!-- display search results -->
         <section>
             <!-- show error -->
-            <p style="display: none;" class="text-danger text-center fs-4" id="perror"></p>
-            <p style="display: none;" id="search-info" class="text-center text-success">Displaying <span id="displaying-result"></span> of <span id="total-result-found"></span> search results.</p>
-            <div id="parent" class="row row-cols-1 row-cols-md-2 g-4">
+            <p class="text-danger text-center fs-4" id="error-message"></p>
+
+            <!-- search content -->
+            <div id="display-books" class="row row-cols-1 row-cols-md-2 g-4">
 
             </div>
         </section>
 
     </main>
-
-
-
 
     <script src="js/myscript.js"></script>
     <script src="js/bootstrap.bundle.min.js"></script>
